@@ -1,26 +1,46 @@
 import React from 'react';
-import logo from './logo.svg';
+import { Link } from 'react-router-dom'
 import './App.css';
+import Notes from './components/Notes'
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+import Button from 'react-bootstrap/Button'
 
-function App() {
+
+class App extends React.Component {
+
+createNewNote(){
+  //hit api to create a new note in table.
+    this.props.history.push('/add')
+  
+}
+
+render() {
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container>
+      <Row>
+        <Col lg={{ span: 3, offset: 4 }}>
+      <h1>My Notes App</h1>
+      </Col>
+      </Row>
+      <Row>
+        <Col lg={{ span:2, offset: 10}}>
+        <Button><Link className="addBtn" to="/add">New Note</Link></Button>
+        </Col>
+      </Row>
+    <br/>
+      <Row>
+        <Col lg="12">
+         
+          <Notes />
+        </Col>
+      
+      </Row>
+    </Container>
   );
+}
 }
 
 export default App;

@@ -31,3 +31,11 @@
     transform: rotate(360deg);
   }
 }
+
+.addBtn {
+  color: white !important;
+}
+
+.addBtn:hover {
+  text-decoration: none !important;
+}

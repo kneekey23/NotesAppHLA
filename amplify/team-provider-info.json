@@ -1,0 +1,14 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "notesapp-dev-20190808152802-authRole",
+            "UnauthRoleArn": "arn:aws:iam::805580953652:role/notesapp-dev-20190808152802-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::805580953652:role/notesapp-dev-20190808152802-authRole",
+            "Region": "us-west-2",
+            "DeploymentBucketName": "notesapp-dev-20190808152802-deployment",
+            "UnauthRoleName": "notesapp-dev-20190808152802-unauthRole",
+            "StackName": "notesapp-dev-20190808152802",
+            "StackId": "arn:aws:cloudformation:us-west-2:805580953652:stack/notesapp-dev-20190808152802/c8af6a10-ba2b-11e9-879e-0ae846f1e916"
+        }
+    }
+}
