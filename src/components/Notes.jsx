@@ -19,11 +19,11 @@ class Notes extends React.Component {
                     return (
                         <ListGroup.Item key={index}>
                             <Row>
-                                <Col lg="10">
+                                <Col xs="10">
                                     <h3>{note.title}</h3>
                                     <h6>By: {note.author}</h6>
                                 </Col>
-                                <Col lg="2">
+                                <Col xs="2">
                                 <Link to={url}><IoIosArrowForward size="3em" /></Link>
                                 </Col>
                         </Row>
