@@ -8,7 +8,6 @@ import notes from '../notes.js'
 
 class AddNote extends React.Component {
 
-
     constructor(props) {
         super(props);
         this.state = {
@@ -41,8 +40,16 @@ class AddNote extends React.Component {
             author: this.state.author,
             note: this.state.note
         }
-       notes.push(note)
-        this.props.history.push('/')
+        fetch('https://ki1n5t04va.execute-api.us-west-2.amazonaws.com/prod/notes', {
+            method: "POST",
+            body: JSON.stringify(note),
+            header: {
+                "Content-Type": "application/json"
+            }
+        }).then(response => {
+            console.log(response);
+        })
+       // this.props.history.push('/')
 
     }
     

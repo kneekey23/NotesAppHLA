@@ -18,6 +18,15 @@ class Note extends React.Component {
         }
 
         //send to api endpoint to translate the text
+        fetch('https://ki1n5t04va.execute-api.us-west-2.amazonaws.com/prod/translate', {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then(response => response.json()).then(data => {
+            this.setState({note: data.TranslatedText})
+        })
     }
     render(){
         return (
