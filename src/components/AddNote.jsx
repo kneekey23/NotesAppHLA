@@ -19,6 +19,7 @@ class AddNote extends React.Component {
         this.handleAuthorChange = this.handleAuthorChange.bind(this)
         this.handleNoteChange = this.handleNoteChange.bind(this)
         this.handleTitleChange = this.handleTitleChange.bind(this)
+        this.addNote = this.addNote.bind(this);
       }
 
       handleAuthorChange(e) {
@@ -40,8 +41,9 @@ class AddNote extends React.Component {
             author: this.state.author,
             note: this.state.note
         }
-        notes.push(note)
+       notes.push(note)
         this.props.history.push('/')
+
     }
     
     render (){
@@ -67,7 +69,7 @@ class AddNote extends React.Component {
                                 <Form.Label>Write your note</Form.Label>
                                 <Form.Control as="textarea" rows="3" value={this.state.note} onChange={this.handleNoteChange} />
                             </Form.Group>
-                            <Button variant="primary" type="submit">
+                            <Button variant="primary" type="button" onClick={this.addNote}>
                                 Submit
                             </Button>
                         </Form>
