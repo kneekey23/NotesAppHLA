@@ -1,0 +1,221 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Metadata:
+    Generator: "former2"
+Description: ""
+Resources:
+    lambda1eb74aa:
+        Type: "AWS::Lambda::Function"
+        Properties:
+            Description: ""
+            FunctionName: "NotesTranslate"
+            Handler: "index.handler"
+            Code: 
+                S3Bucket: "awslambda-us-west-2-tasks"
+                S3Key: "/snapshots/805580953652/NotesTranslate-602bdfbe-e02e-4bfd-a934-c02ab5d3347f"
+                S3ObjectVersion: "wrmb9avPMObtm2ShyiQaEIMLLY_SjGup"
+            MemorySize: 128
+            Role: "arn:aws:iam::805580953652:role/service-role/NotesPost-role-ain5n557"
+            Runtime: "nodejs10.x"
+            Timeout: 3
+            TracingConfig: 
+                Mode: "PassThrough"
+
+    lambda4533ca1:
+        Type: "AWS::Lambda::Function"
+        Properties:
+            Description: ""
+            FunctionName: "NotesPost"
+            Handler: "index.handler"
+            Code: 
+                S3Bucket: "awslambda-us-west-2-tasks"
+                S3Key: "/snapshots/805580953652/NotesPost-187583a2-e8f0-4224-a55b-909b069ee58c"
+                S3ObjectVersion: "d_zHzQ4AFIB5CHIePEyI5BaH6PrpVJUF"
+            MemorySize: 128
+            Role: "arn:aws:iam::805580953652:role/service-role/NotesPost-role-ain5n557"
+            Runtime: "nodejs10.x"
+            Timeout: 3
+            TracingConfig: 
+                Mode: "PassThrough"
+
+    apigatewayd854841:
+        Type: "AWS::ApiGateway::RestApi"
+        Properties:
+            Name: "NotesAPI"
+            ApiKeySourceType: "HEADER"
+            EndpointConfiguration: 
+                Types: 
+                  - "REGIONAL"
+
+    apigatewaybfed231:
+        Type: "AWS::ApiGateway::Resource"
+        Properties:
+            RestApiId: !Ref apigatewayd854841
+
+    apigatewayfc6730f:
+        Type: "AWS::ApiGateway::Resource"
+        Properties:
+            RestApiId: !Ref apigatewayd854841
+            PathPart: "translate"
+            ParentId: !Ref apigatewaybfed231
+
+    apigateway65a13ad:
+        Type: "AWS::ApiGateway::Resource"
+        Properties:
+            RestApiId: !Ref apigatewayd854841
+            PathPart: "notes"
+            ParentId: !Ref apigatewaybfed231
+
+    apigatewayc10e044:
+        Type: "AWS::ApiGateway::Method"
+        Properties:
+            RestApiId: !Ref apigatewayd854841
+            ResourceId: !Ref apigatewayfc6730f
+            HttpMethod: "OPTIONS"
+            AuthorizationType: "NONE"
+            ApiKeyRequired: false
+            RequestParameters: {}
+            MethodResponses: 
+              - 
+                ResponseModels: 
+                    application/json: "Empty"
+                ResponseParameters: 
+                    method.response.header.Access-Control-Allow-Headers: false
+                    method.response.header.Access-Control-Allow-Methods: false
+                    method.response.header.Access-Control-Allow-Origin: false
+                StatusCode: "200"
+            Integration: 
+                CacheNamespace: !Ref apigatewayfc6730f
+                IntegrationResponses: 
+                  - 
+                    ResponseParameters: 
+                        method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+                        method.response.header.Access-Control-Allow-Methods: "'OPTIONS,POST'"
+                        method.response.header.Access-Control-Allow-Origin: "'*'"
+                    ResponseTemplates: {}
+                    StatusCode: "200"
+                PassthroughBehavior: "WHEN_NO_MATCH"
+                RequestTemplates: 
+                    application/json: "{\"statusCode\": 200}"
+                TimeoutInMillis: 29000
+                Type: "MOCK"
+
+    apigateway2057c3b:
+        Type: "AWS::ApiGateway::Method"
+        Properties:
+            RestApiId: !Ref apigatewayd854841
+            ResourceId: !Ref apigatewayfc6730f
+            HttpMethod: "POST"
+            AuthorizationType: "NONE"
+            ApiKeyRequired: false
+            RequestParameters: {}
+            MethodResponses: 
+              - 
+                ResponseModels: 
+                    application/json: "Empty"
+                ResponseParameters: 
+                    method.response.header.Access-Control-Allow-Origin: false
+                StatusCode: "200"
+            Integration: 
+                CacheNamespace: !Ref apigatewayfc6730f
+                ContentHandling: "CONVERT_TO_TEXT"
+                IntegrationHttpMethod: "POST"
+                IntegrationResponses: 
+                  - 
+                    ResponseParameters: 
+                        method.response.header.Access-Control-Allow-Origin: "'*'"
+                    ResponseTemplates: {}
+                    StatusCode: "200"
+                PassthroughBehavior: "WHEN_NO_MATCH"
+                TimeoutInMillis: 29000
+                Type: "AWS"
+                Uri: !Sub "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:805580953652:function:${lambda1eb74aa}/invocations"
+
+    apigateway71ea09e:
+        Type: "AWS::ApiGateway::Method"
+        Properties:
+            RestApiId: !Ref apigatewayd854841
+            ResourceId: !Ref apigateway65a13ad
+            HttpMethod: "OPTIONS"
+            AuthorizationType: "NONE"
+            ApiKeyRequired: false
+            RequestParameters: {}
+            MethodResponses: 
+              - 
+                ResponseModels: 
+                    application/json: "Empty"
+                ResponseParameters: 
+                    method.response.header.Access-Control-Allow-Headers: false
+                    method.response.header.Access-Control-Allow-Methods: false
+                    method.response.header.Access-Control-Allow-Origin: false
+                StatusCode: "200"
+            Integration: 
+                CacheNamespace: !Ref apigateway65a13ad
+                IntegrationResponses: 
+                  - 
+                    ResponseParameters: 
+                        method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+                        method.response.header.Access-Control-Allow-Methods: "'OPTIONS,POST'"
+                        method.response.header.Access-Control-Allow-Origin: "'*'"
+                    ResponseTemplates: {}
+                    StatusCode: "200"
+                PassthroughBehavior: "WHEN_NO_MATCH"
+                RequestTemplates: 
+                    application/json: "{\"statusCode\": 200}"
+                TimeoutInMillis: 29000
+                Type: "MOCK"
+
+    apigateway9517839:
+        Type: "AWS::ApiGateway::Method"
+        Properties:
+            RestApiId: !Ref apigatewayd854841
+            ResourceId: !Ref apigateway65a13ad
+            HttpMethod: "POST"
+            AuthorizationType: "NONE"
+            ApiKeyRequired: false
+            RequestParameters: {}
+            MethodResponses: 
+              - 
+                ResponseModels: 
+                    application/json: "Empty"
+                ResponseParameters: 
+                    method.response.header.Access-Control-Allow-Origin: false
+                StatusCode: "200"
+            Integration: 
+                CacheNamespace: !Ref apigateway65a13ad
+                ContentHandling: "CONVERT_TO_TEXT"
+                IntegrationHttpMethod: "POST"
+                IntegrationResponses: 
+                  - 
+                    ResponseParameters: 
+                        method.response.header.Access-Control-Allow-Origin: "'*'"
+                    ResponseTemplates: {}
+                    StatusCode: "200"
+                PassthroughBehavior: "WHEN_NO_MATCH"
+                TimeoutInMillis: 29000
+                Type: "AWS"
+                Uri: !Sub "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:805580953652:function:${lambda4533ca1}/invocations"
+
+    iam958cf9a:
+        Type: "AWS::IAM::Role"
+        Properties:
+            Path: "/"
+            RoleName: "firehose_delivery_role"
+            AssumeRolePolicyDocument: "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Sid\":\"\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"firehose.amazonaws.com\"},\"Action\":\"sts:AssumeRole\",\"Condition\":{\"StringEquals\":{\"sts:ExternalId\":\"805580953652\"}}}]}"
+            MaxSessionDuration: 3600
+
+    iamc087475:
+        Type: "AWS::IAM::Role"
+        Properties:
+            Path: "/"
+            RoleName: "MythicalMysfitsStreamingS-MysfitsClicksProcessorRo-U74OV2E30VKM"
+            AssumeRolePolicyDocument: "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"lambda.amazonaws.com\"},\"Action\":\"sts:AssumeRole\"}]}"
+            MaxSessionDuration: 3600
+
+    iam2ff9da8:
+        Type: "AWS::IAM::Role"
+        Properties:
+            Path: "/service-role/"
+            RoleName: !Sub "${lambda4533ca1}-role-ain5n557"
+            AssumeRolePolicyDocument: "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"lambda.amazonaws.com\"},\"Action\":\"sts:AssumeRole\"}]}"
+            MaxSessionDuration: 3600
+
